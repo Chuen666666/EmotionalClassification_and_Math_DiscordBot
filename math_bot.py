@@ -11,14 +11,20 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import torch
 
 if not os.getenv('RENDER'):
-    load_dotenv(dotenv_path='bot/token.env')
+    load_dotenv(dotenv_path='dc_bot/bot_token.env')
 
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 if not TOKEN:
     raise RuntimeError('找不到 Discord Bot Token')
 
-model = BertForSequenceClassification.from_pretrained('bert_emotion_model')
-tokenizer = BertTokenizer.from_pretrained('bert_emotion_model')
+BASE_DIR = Path(__file__).parent
+MODEL_DIR = BASE_DIR / 'bert_emotion_model'
+
+os.environ['TRANSFORMERS_OFFLINE'] = '1'
+
+tokenizer = BertTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
+model = BertForSequenceClassification.from_pretrained(MODEL_DIR, local_files_only=True)
+model.eval()
 
 emotion_to_emoji = {
     'Positive': '👍',
@@ -27,7 +33,7 @@ emotion_to_emoji = {
 }
 
 def load_server_config() -> dict[str, int]:
-    for p in (Path('/etc/secrets/server_channel.json'), Path('server_channel.json')):
+    for p in (Path('/etc/secrets/server_channel.json'), Path('dc_bot/server_channel.json')):
         if p.exists():
             with p.open('r', encoding='utf-8') as f:
                 return json.load(f)
