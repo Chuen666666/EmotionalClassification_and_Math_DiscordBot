@@ -10,21 +10,28 @@ from pathlib import Path
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch
 
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_DIR = BASE_DIR / 'bert_emotion_model'
+
 if not os.getenv('RENDER'):
-    load_dotenv(dotenv_path='dc_bot/bot_token.env')
+    load_dotenv(BASE_DIR / 'bot_token.env')
 
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 if not TOKEN:
     raise RuntimeError('找不到 Discord Bot Token')
 
-BASE_DIR = Path(__file__).parent
-MODEL_DIR = BASE_DIR / 'bert_emotion_model'
-
 os.environ['TRANSFORMERS_OFFLINE'] = '1'
 
-tokenizer = BertTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
-model = BertForSequenceClassification.from_pretrained(MODEL_DIR, local_files_only=True)
-model.eval()
+try:
+    tokenizer = BertTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
+    model = BertForSequenceClassification.from_pretrained(MODEL_DIR, local_files_only=True)
+    model.eval()
+
+    # GPU support
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model.to(device)
+except OSError as e:
+    raise RuntimeError('找不到情緒辨識模型') from e
 
 emotion_to_emoji = {
     'Positive': '👍',
@@ -33,17 +40,25 @@ emotion_to_emoji = {
 }
 
 def load_server_config() -> dict[str, int]:
-    for p in (Path('/etc/secrets/server_channel.json'), Path('dc_bot/server_channel.json')):
-        if p.exists():
-            with p.open('r', encoding='utf-8') as f:
-                return json.load(f)
+    # Linux absolute path
+    etc_path = Path('/etc/secrets/server_channel.json')
+    if etc_path.exists():
+        with etc_path.open('r', encoding='utf-8') as f:
+            return json.load(f)
+
+    # Local relative path
+    local_path = BASE_DIR / 'server_channel.json'
+    if local_path.exists():
+        with local_path.open('r', encoding='utf-8') as f:
+            return json.load(f)
 
     raise FileNotFoundError('找不到 server_channel.json')
 
 jdata: dict[str, int] = load_server_config()
 
 intents = discord.Intents.default()
-intents.message_content, intents.members = True, True
+intents.message_content = True
+intents.members = True
 
 async def check_channel(ctx) -> bool:
     match ctx.command.name:
