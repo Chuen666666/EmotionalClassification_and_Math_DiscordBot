@@ -56,8 +56,9 @@ trainer = Trainer(
     eval_dataset=datasets['test']
 )
 
-trainer.train()
+if __name__ == '__main__':
+    trainer.train()
 
-torch.save(model.state_dict(), 'bert_emotion_model.pth')
-model.save_pretrained('bert_emotion_model')
-tokenizer.save_pretrained('bert_emotion_model')
+    torch.save(model.state_dict(), 'bert_emotion_model.pth')
+    model.save_pretrained('bert_emotion_model')
+    tokenizer.save_pretrained('bert_emotion_model')

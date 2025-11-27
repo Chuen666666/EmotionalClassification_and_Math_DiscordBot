@@ -372,4 +372,5 @@ async def on_message(msg):
         print(f'情緒辨識結果：{"Positive" if emoji == emotion_to_emoji["Positive"] else "Negative"}')
     await bot.process_commands(msg)
 
-bot.run(TOKEN)
+if __name__ == '__main__':
+    bot.run(TOKEN)
