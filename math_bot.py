@@ -10,17 +10,45 @@ from pathlib import Path
 from transformers import BertTokenizer, BertForSequenceClassification
 import torch
 
+from flask import Flask
+from threading import Thread
+
+# 創建迷你網頁，使 Render 可運作
+app = Flask(__name__)
+@app.route('/')
+def home():
+    return "I'm alive!"
+def run():
+    app.run(host='0.0.0.0', port=8080)
+def keep_alive():
+    t = Thread(target=run)
+    t.start()
+keep_alive()
+
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_DIR = BASE_DIR / 'bert_emotion_model'
+
+if os.path.exists('/etc/secrets/server_channel.json'):
+    CONFIG_PATH = Path('/etc/secrets/server_channel.json')
+elif (BASE_DIR / 'server_channel.json').exists():
+    CONFIG_PATH = BASE_DIR / 'server_channel.json'
+else:
+    CONFIG_PATH = Path('server_channel.json')
+
+try:
+    with CONFIG_PATH.open('r', encoding='utf-8') as f:
+        jdata = json.load(f)
+    print(f'成功讀取設定檔：{CONFIG_PATH}')
+except Exception as e:
+    print(f'讀取設定檔失敗！路徑：{CONFIG_PATH}，錯誤：{e}')
 
 if not os.getenv('RENDER'):
     load_dotenv(BASE_DIR / 'bot_token.env')
 
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
-if not TOKEN:
-    raise RuntimeError('找不到 Discord Bot Token')
 
-os.environ['TRANSFORMERS_OFFLINE'] = '1'
+if not TOKEN:
+    load_dotenv(dotenv_path=BASE_DIR / 'bot_token.env')
 
 try:
     tokenizer = BertTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
@@ -38,23 +66,6 @@ emotion_to_emoji = {
     'Neutral': None,
     'Negative': '👎'
 }
-
-def load_server_config() -> dict[str, int]:
-    # Linux absolute path
-    etc_path = Path('/etc/secrets/server_channel.json')
-    if etc_path.exists():
-        with etc_path.open('r', encoding='utf-8') as f:
-            return json.load(f)
-
-    # Local relative path
-    local_path = BASE_DIR / 'server_channel.json'
-    if local_path.exists():
-        with local_path.open('r', encoding='utf-8') as f:
-            return json.load(f)
-
-    raise FileNotFoundError('找不到 server_channel.json')
-
-jdata: dict[str, int] = load_server_config()
 
 intents = discord.Intents.default()
 intents.message_content = True
