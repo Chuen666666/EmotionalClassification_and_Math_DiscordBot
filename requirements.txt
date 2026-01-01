@@ -1,6 +1,7 @@
 # math_bot.py
 discord.py>=2.3.0
 python-dotenv>=1.0.0
+flask>=3.0.0
 transformers>=4.36.0
 torch>=2.0.0
 
