@@ -57,7 +57,7 @@ pip install -r requirements.txt
    - Build Command: `pip install -r requirements.txt`
    - Start Command: `python math_bot.py`
    - Environment Variables（兩個）
-     1. 填入名稱 `TOKEN` 以及具體的 Discord Bot Token 進去
+     1. 填入名稱 `DISCORD_BOT_TOKEN` 以及具體的 Discord Bot Token 進去
      2. 填入名稱 `MODEL_URL` 以及模型 Google 雲端硬碟網址（Direct Link）
    - Advanced
    - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
