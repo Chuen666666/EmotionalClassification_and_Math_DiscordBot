@@ -44,9 +44,20 @@ pip install -r requirements.txt
 ### 執行 Bot
 若你是在自己電腦上跑 Discord Bot，直接執行 `math_bot.py` 即可讓機器人上線
 
-若你想要使用 Render 來跑 Discord Bot，請跟著以下步驟：
+若機器人跑在 Render 環境，它會自動維持上線狀態，Render 和 UptimeRobot 的設定方式如下：
 
-
+1. 創建一個 Web Service
+2. 選擇機器人的 GitHub Repo（可先 Fork 此 Repo）
+3. 填入以下設定
+   - Runtime: `Python3`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `python math_bot.py`
+   - Environment Variables：填入名稱 `TOKEN` 以及具體的 Discord Bot Token 進去
+   - Advanced
+     - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
+     - Health Check Path: `/`（預設為 `/healthz`）
+4. 最後點擊 `Deploy Web Service`
+5. 至 UptimeRobot：創建 HTTP / website monitoring 並填入 Render 中該 Bot 的網址
 
 ### 功能簡介
 - **人數統計語音頻道**
