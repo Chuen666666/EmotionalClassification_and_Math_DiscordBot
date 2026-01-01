@@ -1,17 +1,19 @@
+import gc
 import json
 import math
 import os
+import zipfile
+from pathlib import Path
+from threading import Thread
 
+import requests
+import torch
 from dotenv import load_dotenv
+from flask import Flask
+from transformers import BertForSequenceClassification, BertTokenizer
+
 import discord
 from discord.ext import commands, tasks
-from pathlib import Path
-
-from transformers import BertTokenizer, BertForSequenceClassification
-import torch
-
-from flask import Flask
-from threading import Thread
 
 # 創建迷你網頁，使 Render 可運作
 app = Flask(__name__)
@@ -27,6 +29,7 @@ keep_alive()
 
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_DIR = BASE_DIR / 'bert_emotion_model'
+PTH_PATH = BASE_DIR / 'bert_emotion_model.pth'
 
 if os.path.exists('/etc/secrets/server_channel.json'):
     CONFIG_PATH = Path('/etc/secrets/server_channel.json')
@@ -50,16 +53,50 @@ TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 if not TOKEN:
     load_dotenv(dotenv_path=BASE_DIR / 'bot_token.env')
 
+def prepare_model():
+    if not MODEL_DIR.exists() or not PTH_PATH.exists():
+        url = os.getenv('MODEL_URL')
+        if not url:
+            print('找不到 MODEL_URL 環境變數，跳過下載')
+            return
+        
+        print('下載模型中...')
+        try:
+            r = requests.get(url, stream=True)
+            r.raise_for_status()
+            zip_tmp = BASE_DIR / 'model.zip'
+            with open(zip_tmp, 'wb') as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            print('解壓中...')
+            with zipfile.ZipFile(zip_tmp, 'r') as zip_ref:
+                zip_ref.extractall(BASE_DIR)
+            
+            os.remove(zip_tmp)
+            print('模型已就緒')
+
+            del r
+            gc.collect()
+        except Exception as e:
+            print(f'模型下載失敗：{e}')
+
+prepare_model()
+gc.collect()
+
 try:
+    print('正在讀取模型結構')
     tokenizer = BertTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
     model = BertForSequenceClassification.from_pretrained(MODEL_DIR, local_files_only=True)
-    model.eval()
 
-    # GPU support
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model.to(device)
-except OSError as e:
-    raise RuntimeError('找不到情緒辨識模型') from e
+    print('權重載入中（CPU）')
+    state_dict = torch.load(PTH_PATH, map_location=torch.device('cpu'))
+    model.load_state_dict(state_dict)
+
+    model.eval()
+    print('模型載入成功')
+except Exception as e:
+    print(f'模型載入發生錯誤：{e}')
 
 emotion_to_emoji = {
     'Positive': '👍',

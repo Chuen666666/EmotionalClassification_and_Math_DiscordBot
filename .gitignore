@@ -1,6 +1,7 @@
 # 模型資料
 bert_emotion_model.pth
 bert_emotion_model/
+model.zip
 
 # 真實的訓練資料
 BERT_training_data.xlsx

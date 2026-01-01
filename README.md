@@ -1,4 +1,4 @@
-# 機器人建置與使用教學
+# Emotional Classification and Math Discord Bot
 ## 環境
 ### 基礎環境
 - Python（3.9+，建議使用 3.10 ~ 3.12）
@@ -46,18 +46,24 @@ pip install -r requirements.txt
 
 若機器人跑在 Render 環境，它會自動維持上線狀態，Render 和 UptimeRobot 的設定方式如下：
 
-1. 創建一個 Web Service
-2. 選擇機器人的 GitHub Repo（可先 Fork 此 Repo）
-3. 填入以下設定
+1. 將 `bert_emotion_model` 資料夾和 `bert_emotion_model.pth` 模型檔一起選取，並以 **ZIP** 加壓縮
+2. 重新命名壓縮檔為 `model.zip`
+3. 將壓縮檔上傳到 Google 雲端硬碟，存取權設為 **知道連結的任何人**
+4. 將連結改為 Direct Link：`https://drive.google.com/file/d/你的檔案ID/view?usp=sharing` &rarr; `https://docs.google.com/uc?export=download&id=你的檔案ID`
+5. 到 Render 創建一個 Web Service
+6. 選擇機器人的 GitHub Repo（可先 Fork 此 Repo）
+7. 回到 Render，填入以下設定
    - Runtime: `Python3`
    - Build Command: `pip install -r requirements.txt`
    - Start Command: `python math_bot.py`
-   - Environment Variables：填入名稱 `TOKEN` 以及具體的 Discord Bot Token 進去
+   - Environment Variables（兩個）
+     1. 填入名稱 `TOKEN` 以及具體的 Discord Bot Token 進去
+     2. 填入名稱 `MODEL_URL` 以及模型 Google 雲端硬碟網址（Direct Link）
    - Advanced
-     - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
-     - Health Check Path: `/`（預設為 `/healthz`）
-4. 最後點擊 `Deploy Web Service`
-5. 至 UptimeRobot：創建 HTTP / website monitoring 並填入 Render 中該 Bot 的網址
+   - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
+   - Health Check Path: `/`（預設為 `/healthz`）
+8.  最後點擊 `Deploy Web Service`
+9.  至 UptimeRobot：創建 HTTP / website monitoring 並填入 Render 中該 Bot 的網址
 
 ### 功能簡介
 - **人數統計語音頻道**
