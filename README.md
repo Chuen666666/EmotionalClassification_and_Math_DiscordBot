@@ -1,28 +1,36 @@
 # 機器人建置與使用教學
-## Step 1：環境
+## 環境
 ### 基礎環境
 - Python（3.9+，建議使用 3.10 ~ 3.12）
 - Discord 伺服器（具管理員或擁有者的權限）
 - Discord Bot（擁有 Token，並將它拉進 Discord 伺服器中）
+
 > 不會建立 Bot 的話，可以依[這條影片](https://youtu.be/equ42VBYPrc?si=_81b7t4MDZGZwqs7)來操作
-### Python 虛擬環境（Venv）與套件
+
+### 依賴
 1. 請先把本專案 clone 下來後，建立一個 Venv
-2. 若有提示要安裝 `requirements.txt` 中的內容，安裝；否則在建立完 Venv 後，使用以下指令安裝
+2. 使用以下指令安裝依賴
+
 ```bash
 pip install -r requirements.txt
 ```
+
 ### 檔案修改
+
 |原檔名|修改檔名|修改內容|
 |:-:|:-:|:-:|
 |`BERT_training_data.example.xlsx`|`BERT_training_data.xlsx`|將所有訓練資料和標籤依提示放入|
 |`bot_token.example.env`|`bot_token.env`|將 Discord Bot 的 Token 放入|
 |`server_channel.example.json`|`server_channel.json`|將 Discord 頻道 ID 依提示放入|
+
 > 以上三個檔案皆屬於敏感資訊，請勿上傳至公開的 GitHub
 
 > 另外，若使用 Render 來線上跑 Discord Bot，請在 Render &rarr; Service &rarr; Environment Variables 新增 `DISCORD_BOT_TOKEN = <填入你的 BOT TOKEN>`
-## Step 2：訓練模型
+
+## 訓練模型
 ### 生成模型檔
 執行 `emo_cla.py`，待訓練完成後，可以看到終端機輸出的 `train_loss` 值是多少，它代表訓練損失，愈低表示愈準
+
 ### 調整準度
 若覺得 `train_loss` 過高，可以試著：
 - 重新訓練（直接重新執行 `emo_cla.py`）
@@ -31,7 +39,8 @@ pip install -r requirements.txt
   - `num_train_epochs`：訓練輪數（資料愈多，此值愈小，一般在 10 以內）
   - `learning_rate`：學習率（一般在 1e-5 ~ 5e-5 間，可以試著用 2e-5 或 3e-5）
   > 若修改了訓練資料，請重新執行 `emo_cla.py` 來生成新的模型檔（.pth）
-## Step 3：執行 Bot 與功能介紹
+
+## 執行 Bot 與功能介紹
 ### 執行 Bot
 若你是在自己電腦上跑 Discord Bot，直接執行 `math_bot.py` 即可讓機器人上線
 
@@ -52,6 +61,7 @@ pip install -r requirements.txt
     - Start Command：`python math_bot.py`
 6. 按 Manual Deploy &rarr; Clear build cache & deploy，待 Render 建置與啟動
 7. 服務跑起來後，得進入 Logs 頁面檢查 Bot 是否有成功跑起來
+
 ### 功能簡介
 - **人數統計語音頻道**
   - 總人數（`TOTAL_PPL`）
@@ -71,5 +81,6 @@ pip install -r requirements.txt
 - **數學計算斜線指令**（`COMMAND`）
   - 於頻道中輸入 `/` 即可使用，指令下方附帶說明
   - 所有使用者皆可使用
+
 > 括號表示 `server_channel.json` 的對應頻道
 > 此 Bot 未製作 `!help` 指令，使用後的輸出結果可能不如預期
