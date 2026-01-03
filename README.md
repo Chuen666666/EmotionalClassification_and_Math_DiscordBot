@@ -25,8 +25,6 @@ pip install -r requirements.txt
 
 > 以上三個檔案皆屬於敏感資訊，請勿上傳至公開的 GitHub
 
-> 另外，若使用 Render 來線上跑 Discord Bot，請在 Render &rarr; Service &rarr; Environment Variables 新增 `DISCORD_BOT_TOKEN = <填入你的 BOT TOKEN>`
-
 ## 訓練模型
 ### 生成模型檔
 執行 `emo_cla.py`，待訓練完成後，可以看到終端機輸出的 `train_loss` 值是多少，它代表訓練損失，愈低表示愈準
@@ -44,7 +42,11 @@ pip install -r requirements.txt
 ### 執行 Bot
 若你是在自己電腦上跑 Discord Bot，直接執行 `math_bot.py` 即可讓機器人上線
 
-若機器人跑在 Render 環境，它會自動維持上線狀態，Render 和 UptimeRobot 的設定方式如下：
+```bash
+python math_bot.py
+```
+
+若機器人跑在 Render 環境，它會自動維持上線狀態，Render 和 UptimeRobot 的設定方式如下（以全都用免費方案為主）：
 
 1. 將 `bert_emotion_model` 資料夾和 `bert_emotion_model.pth` 模型檔一起選取，並以 **ZIP** 加壓縮
 2. 重新命名壓縮檔為 `model.zip`
