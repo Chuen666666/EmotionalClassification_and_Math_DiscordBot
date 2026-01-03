@@ -48,8 +48,8 @@ pip install -r requirements.txt
 
 1. 將 `bert_emotion_model` 資料夾和 `bert_emotion_model.pth` 模型檔一起選取，並以 **ZIP** 加壓縮
 2. 重新命名壓縮檔為 `model.zip`
-3. 將壓縮檔上傳到 Google 雲端硬碟，存取權設為 **知道連結的任何人**
-4. 將連結改為 Direct Link：`https://drive.google.com/file/d/你的檔案ID/view?usp=sharing` &rarr; `https://docs.google.com/uc?export=download&id=你的檔案ID`
+3. 到 [HuggingFace](https://huggingface.co/)，點擊 New Dataset（Visibility 設為 Public） &rarr; Files and versions &rarr; Contribute &rarr; Upload files，將剛才的 `model.zip` 拖進去並 Commit
+4. 上傳完成後，回到 Files and versions，對著 `model.zip` 的下載鈕點右鍵並複製連結網址
 5. 到 Render 創建一個 Web Service
 6. 選擇機器人的 GitHub Repo（可先 Fork 此 Repo）
 7. 回到 Render，填入以下設定
@@ -58,7 +58,7 @@ pip install -r requirements.txt
    - Start Command: `python math_bot.py`
    - Environment Variables（兩個）
      1. 填入名稱 `DISCORD_BOT_TOKEN` 以及具體的 Discord Bot Token 進去
-     2. 填入名稱 `MODEL_URL` 以及模型 Google 雲端硬碟網址（Direct Link）
+     2. 填入名稱 `MODEL_URL` 並貼上剛才複製的模型下載連結
    - Advanced
    - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
    - Health Check Path: `/`（預設為 `/healthz`）
