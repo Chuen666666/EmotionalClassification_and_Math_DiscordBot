@@ -60,8 +60,8 @@ pip install -r requirements.txt
      1. 填入名稱 `DISCORD_BOT_TOKEN` 以及具體的 Discord Bot Token 進去
      2. 填入名稱 `MODEL_URL` 並貼上剛才複製的模型下載連結
    - Advanced
-   - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
-   - Health Check Path: `/`（預設為 `/healthz`）
+     - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
+     - Health Check Path: `/`（預設為 `/healthz`）
 8.  最後點擊 `Deploy Web Service`
 9.  至 UptimeRobot：創建 HTTP / website monitoring 並填入 Render 中該 Bot 的網址
 
@@ -86,4 +86,5 @@ pip install -r requirements.txt
   - 所有使用者皆可使用
 
 > 括號表示 `server_channel.json` 的對應頻道
+
 > 此 Bot 未製作 `!help` 指令，使用後的輸出結果可能不如預期
