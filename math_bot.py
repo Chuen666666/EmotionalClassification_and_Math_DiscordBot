@@ -26,7 +26,6 @@ def keep_alive():
     t = Thread(target=run)
     t.daemon = True
     t.start()
-keep_alive()
 
 BASE_DIR = Path(__file__).resolve().parent
 MODEL_DIR = BASE_DIR / 'bert_emotion_model'
@@ -422,4 +421,8 @@ async def on_message(msg):
     await bot.process_commands(msg)
 
 if __name__ == '__main__':
-    bot.run(TOKEN)
+    if TOKEN:
+        keep_alive()
+        bot.run(TOKEN)
+    else:
+        print('錯誤！找不到 TOKEN！')
