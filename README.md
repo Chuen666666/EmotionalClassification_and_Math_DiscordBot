@@ -15,15 +15,19 @@
 pip install -r requirements.txt
 ```
 
-### 檔案修改
+### 從範例檔建立必要檔案
 
-|原檔名|修改檔名|修改內容|
-|:-:|:-:|:-:|
-|`BERT_training_data.example.xlsx`|`BERT_training_data.xlsx`|將所有訓練資料和標籤依提示放入|
-|`bot_token.example.env`|`bot_token.env`|將 Discord Bot 的 Token 放入|
-|`server_channel.example.json`|`server_channel.json`|將 Discord 頻道 ID 依提示放入|
+```bash
+cp BERT_training_data.example.xlsx BERT_training_data.xlsx
+cp bot_token.example.env bot_token.env
+cp server_channel.example.json server_channel.json
+```
+
+> 若使用 Windows 系統，請改用 `copy` 而非 `cp`
 
 > 以上三個檔案皆屬於敏感資訊，請勿上傳至公開的 GitHub
+
+> 複製後，請到被複製的兩個文件中，依提示填上相應的資訊
 
 ## 訓練模型
 ### 生成模型檔
