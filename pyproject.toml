@@ -3,8 +3,8 @@ line-length = 88
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "W", "N", "UP", "FLY"]
-ignore = ["E501"]
+select = ["E", "F", "I", "W", "N", "UP", "FLY", "B", "RUF", "SIM", "PIE", "ARG"]
+ignore = ["E501", "T201", "D100"]
 
 fixable = ["ALL"]
 unfixable = []
