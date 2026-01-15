@@ -4,6 +4,7 @@
 - Python（3.9+，建議使用 3.10 ~ 3.12）
 - Discord 伺服器（具管理員或擁有者的權限）
 - Discord Bot（擁有 Token，並將它拉進 Discord 伺服器中）
+- （可選）Ruff
 
 > 不會建立 Bot 的話，可以依[這條影片](https://youtu.be/equ42VBYPrc?si=_81b7t4MDZGZwqs7)來操作
 
