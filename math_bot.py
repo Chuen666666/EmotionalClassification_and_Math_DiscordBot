@@ -194,7 +194,7 @@ def predict_emotion(sentence) -> str | None:
     predicted_label = torch.argmax(logits, dim=1).item()
     emotion_labels = ['Positive', 'Neutral', 'Negative']
     emotion = emotion_labels[int(predicted_label)]
-    return emotion_to_emoji.get(emotion, None)
+    return emotion_to_emoji.get(emotion)
 
 
 async def update_member_count(guild):
@@ -291,25 +291,25 @@ async def test_leave(ctx):
     bot.dispatch('member_remove', fake_member)
 
 
-@bot.hybrid_command()
-async def 二元一次方程式(
+@bot.hybrid_command(name='二元一次方程式')
+async def linear_equation_in_one_var(
     ctx,
-    第一式的x項係數,
-    第一式的y項係數,
-    第一式的常數項,
-    第二式的x項係數,
-    第二式的y項係數,
-    第二式的常數項,
+    第一式的x項係數,  # noqa: N803
+    第一式的y項係數,  # noqa: N803
+    第一式的常數項,  # noqa: N803
+    第二式的x項係數,  # noqa: N803
+    第二式的y項係數,  # noqa: N803
+    第二式的常數項,  # noqa: N803
 ):
     """請以"ax+by=c"的形式表達，接受整數、小數、分數"""
 
     (
-        第一式的x項係數,
-        第一式的y項係數,
-        第一式的常數項,
-        第二式的x項係數,
-        第二式的y項係數,
-        第二式的常數項,
+        第一式的x項係數,  # noqa: N806
+        第一式的y項係數,  # noqa: N806
+        第一式的常數項,  # noqa: N806
+        第二式的x項係數,  # noqa: N806
+        第二式的y項係數,  # noqa: N806
+        第二式的常數項,  # noqa: N806
     ) = str_(
         第一式的x項係數,
         第一式的y項係數,
@@ -337,11 +337,11 @@ async def 二元一次方程式(
         await ctx.send('無解')
 
 
-@bot.hybrid_command()
-async def 一元一次_二次方程式(ctx, x平方項係數, x項係數, 常數項):
+@bot.hybrid_command(name='一元一次_二次方程式')
+async def linear_quadratic_equation_in_one_var(ctx, x平方項係數, x項係數, 常數項):  # noqa: N803
     """請以"ax^2+bx+c=0"的形式表達，接受整數、小數、分數"""
 
-    x平方項係數, x項係數, 常數項 = str_(x平方項係數, x項係數, 常數項)
+    x平方項係數, x項係數, 常數項 = str_(x平方項係數, x項係數, 常數項)  # noqa: N806
     d = x項係數**2 - 4 * x平方項係數 * 常數項
 
     await ctx.send(
@@ -364,31 +364,43 @@ async def 一元一次_二次方程式(ctx, x平方項係數, x項係數, 常數
         await ctx.send('你是來亂的嗎？')
 
 
-@bot.hybrid_command()
-async def 等差數列(ctx, 數列中的任意值, 該值的項數: int, 公差, 想求的項數: int):
+@bot.hybrid_command(name='等差數列')
+async def arthmetic_sequence(
+    ctx,
+    數列中的任意值,  # noqa: N803
+    該值的項數: int,  # noqa: N803
+    公差,  # noqa: N803
+    想求的項數: int,  # noqa: N803
+):
     """數列中的任意值與公差之輸入，接受整數、小數、分數"""
-    數列中的任意值, 公差 = str_(數列中的任意值, 公差)
+    數列中的任意值, 公差 = str_(數列中的任意值, 公差)  # noqa: N806
     await ctx.send(f'a_n = {int_(數列中的任意值 + (想求的項數 - 該值的項數) * 公差)}')
 
 
-@bot.hybrid_command()
-async def 等差級數(ctx, 首項, 末項, 項數: int):
+@bot.hybrid_command(name='等差級數')
+async def arithmetic_series(ctx, 首項, 末項, 項數: int):  # noqa: N803
     """首項與末項之輸入，接受整數、小數、分數"""
-    首項, 末項 = str_(首項, 末項)
+    首項, 末項 = str_(首項, 末項)  # noqa: N806
     await ctx.send(f'S_n = {int_(項數 * (首項 + 末項) / 2)}')
 
 
-@bot.hybrid_command()
-async def 等比數列(ctx, 數列中的任意值, 該值的項數: int, 公比, 想求的項數: int):
+@bot.hybrid_command(name='等比數列')
+async def geometric_sequence(
+    ctx,
+    數列中的任意值,  # noqa: N803
+    該值的項數: int,  # noqa: N803
+    公比,  # noqa: N803
+    想求的項數: int,  # noqa: N803
+):
     """數列中的任意值與公比之輸入，接受整數、小數、分數"""
-    數列中的任意值, 公比 = str_(數列中的任意值, 公比)
+    數列中的任意值, 公比 = str_(數列中的任意值, 公比)  # noqa: N806
     await ctx.send(f'a_n = {int_(數列中的任意值 * 公比 ** (想求的項數 - 該值的項數))}')
 
 
-@bot.hybrid_command()
-async def 等比級數(ctx, 首項, 公比, 項數: int):
+@bot.hybrid_command(name='等比級數')
+async def geometric_series(ctx, 首項, 公比, 項數: int):  # noqa: N803
     """數列中的首項與公比之輸入，接受整數、小數、分數"""
-    首項, 公比 = str_(首項, 公比)
+    首項, 公比 = str_(首項, 公比)  # noqa: N806
     await ctx.send(
         f'S_n = {
             int_(項數 * 首項)
@@ -398,22 +410,22 @@ async def 等比級數(ctx, 首項, 公比, 項數: int):
     )
 
 
-@bot.hybrid_command()
-async def 階乘(ctx, 整數: int):
+@bot.hybrid_command(name='階乘')
+async def factorial(ctx, 整數: int):  # noqa: N803
     """計算1*2*3*...*n"""
     await ctx.send(f'{整數}! = {math.factorial(整數)}')
 
 
-@bot.hybrid_command()
-async def 組合數(ctx, n: int, k: int):
+@bot.hybrid_command(name='組合數')
+async def combination(ctx, n: int, k: int):
     """計算(n!)/(k!(n-k)!)，或俗稱Cn取k"""
     await ctx.send(f'C{n}取{k} = {math.comb(n, k)}')
 
 
-@bot.hybrid_command()
-async def 指數(ctx, 底數, 指數):
+@bot.hybrid_command(name='指數')
+async def exponent(ctx, 底數, 指數):  # noqa: N803
     """底數與指數之輸入，接受整數、小數、分數"""
-    底數, 指數 = str_(底數, 指數)
+    底數, 指數 = str_(底數, 指數)  # noqa: N806
     await ctx.send(
         f'{int_(底數) if 底數 >= 0 else f"({int_(底數)})"} ^ {int_(指數)} = {
             int_(底數**指數)
@@ -421,10 +433,10 @@ async def 指數(ctx, 底數, 指數):
     )
 
 
-@bot.hybrid_command()
-async def 開n次方根(ctx, 底數, n):
+@bot.hybrid_command(name='開n次方根')
+async def nth_root(ctx, 底數, n):  # noqa: N803
     """底數與n之輸入，接受整數、小數、分數"""
-    底數, n = str_(底數, n)
+    底數, n = str_(底數, n)  # noqa: N806
     await ctx.send(
         f'{int_(底數)}的{int_(n)}次方根 = {int_(底數 ** (1 / n))}'
         if 底數 > 0
@@ -432,10 +444,10 @@ async def 開n次方根(ctx, 底數, n):
     )
 
 
-@bot.hybrid_command()
-async def 對數(ctx, 底數, 真數):
+@bot.hybrid_command(name='對數')
+async def log(ctx, 底數, 真數):  # noqa: N803
     '''底數與真數接受整數、小數、分數，底數接受"e"'''
-    真數 = int_(*str_(真數))
+    真數 = int_(*str_(真數))  # noqa: N806
     match 底數:
         case 'e':
             await ctx.send(f'ln{真數} = {int_(math.log(真數))}')
@@ -444,36 +456,36 @@ async def 對數(ctx, 底數, 真數):
         case '10':
             await ctx.send(f'log{真數} = {int_(math.log10(真數))}')
         case _:
-            底數 = str_(底數)[0]
+            底數 = str_(底數)[0]  # noqa: N806
             await ctx.send(f'log_{int_(底數)}({真數}) = {int_(math.log(真數, 底數))}')
 
 
-@bot.hybrid_command()
-async def 畢氏定理(ctx, 短股, 長股, 斜邊):
+@bot.hybrid_command(name='畢氏定理')
+async def pythagorean_theorem(ctx, 短股, 長股, 斜邊):  # noqa: N803
     """想計算的邊以半形"?"輸入，數字輸入接受整數、小數、分數"""
     try:
         if 短股 == '?':
-            長股, 斜邊 = str_(長股, 斜邊)
-            短股 = math.sqrt(斜邊**2 - 長股**2)
+            長股, 斜邊 = str_(長股, 斜邊)  # noqa: N806
+            短股 = math.sqrt(斜邊**2 - 長股**2)  # noqa: N806
         elif 長股 == '?':
-            短股, 斜邊 = str_(短股, 斜邊)
-            長股 = math.sqrt(斜邊**2 - 短股**2)
+            短股, 斜邊 = str_(短股, 斜邊)  # noqa: N806
+            長股 = math.sqrt(斜邊**2 - 短股**2)  # noqa: N806
         elif 斜邊 == '?':
-            長股, 短股 = str_(長股, 短股)
-            斜邊 = math.sqrt(長股**2 + 短股**2)
+            長股, 短股 = str_(長股, 短股)  # noqa: N806
+            斜邊 = math.sqrt(長股**2 + 短股**2)  # noqa: N806
         else:
             await ctx.send('輸入的值有誤')
             return
-        短股, 長股, 斜邊 = map(int_, (短股, 長股, 斜邊))
+        短股, 長股, 斜邊 = map(int_, (短股, 長股, 斜邊))  # noqa: N806
         await ctx.send(f'{短股 = }, {長股 = }, {斜邊 = }')
     except ValueError:
         await ctx.send('邊長資料有誤')
 
 
-@bot.hybrid_command()
-async def 三角函數(ctx, 對邊, 斜邊, 鄰邊):
+@bot.hybrid_command(name='三角函數')
+async def trigonometric(ctx, 對邊, 斜邊, 鄰邊):  # noqa: N803
     """三角形的三邊長度之輸入，接受整數、小數、分數"""
-    對邊, 斜邊, 鄰邊 = str_(對邊, 斜邊, 鄰邊)
+    對邊, 斜邊, 鄰邊 = str_(對邊, 斜邊, 鄰邊)  # noqa: N806
     if 對邊 + 斜邊 > 鄰邊 and 對邊 + 鄰邊 > 斜邊 and 斜邊 + 鄰邊 > 對邊:
         await ctx.send(f"""sin = {int_(對邊 / 斜邊)}, cos = {int_(鄰邊 / 斜邊)},
 tan = {int_(對邊 / 鄰邊)}, cot = {int_(鄰邊 / 對邊)},
