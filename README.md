@@ -1,6 +1,9 @@
 # Emotional Classification and Math Discord Bot
+
 ## 環境
+
 ### 基礎環境
+
 - Python（3.9+，建議使用 3.10 ~ 3.12）
 - Discord 伺服器（具管理員或擁有者的權限）
 - Discord Bot（擁有 Token，並將它拉進 Discord 伺服器中）
@@ -9,6 +12,7 @@
 > 不會建立 Bot 的話，可以依[這條影片](https://youtu.be/equ42VBYPrc?si=_81b7t4MDZGZwqs7)來操作
 
 ### 依賴
+
 1. 請先把本專案 clone 下來後，建立一個 Venv
 2. 使用以下指令安裝依賴
 
@@ -31,11 +35,15 @@ cp server_channel.example.json server_channel.json
 > 複製後，請到被複製的兩個文件中，依提示填上相應的資訊
 
 ## 訓練模型
+
 ### 生成模型檔
+
 執行 `emo_cla.py`，待訓練完成後，可以看到終端機輸出的 `train_loss` 值是多少，它代表訓練損失，愈低表示愈準
 
 ### 調整準度
+
 若覺得 `train_loss` 過高，可以試著：
+
 - 重新訓練（直接重新執行 `emo_cla.py`）
 - 增加或調整訓練資料（`BERT_training_data.xlsx`）
 - 調整 `emo_cla.py` 中，`training_args` 變數的值：
@@ -44,7 +52,9 @@ cp server_channel.example.json server_channel.json
   > 若修改了訓練資料，請重新執行 `emo_cla.py` 來生成新的模型檔（.pth）
 
 ## 執行 Bot 與功能介紹
+
 ### 執行 Bot
+
 若你是在自己電腦上跑 Discord Bot，直接執行 `math_bot.py` 即可讓機器人上線
 
 ```bash
@@ -69,10 +79,11 @@ python math_bot.py
    - Advanced
      - Secret Files：`Filename` 填入 `server_channel.json`、`File Contents` 填入該 JSON 檔內容
      - Health Check Path: `/`（預設為 `/healthz`）
-8.  最後點擊 `Deploy Web Service`
-9.  至 UptimeRobot：創建 HTTP / website monitoring 並填入 Render 中該 Bot 的網址
+8. 最後點擊 `Deploy Web Service`
+9. 至 UptimeRobot：創建 HTTP / website monitoring 並填入 Render 中該 Bot 的網址
 
 ### 功能簡介
+
 - **人數統計語音頻道**
   - 總人數（`TOTAL_PPL`）
   - 真人（`REAL_PPL`）
