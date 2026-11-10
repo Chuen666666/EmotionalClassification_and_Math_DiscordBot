@@ -71,21 +71,25 @@ def prepare_model():
 
         print('下載模型中...')
         try:
-            r = requests.get(url, stream=True)
-            r.raise_for_status()
-            zip_tmp = BASE_DIR / 'model.zip'
-            with open(zip_tmp, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
+            with requests.get(url, stream=True, timeout=(10, 60)) as response:
+                response.raise_for_status()
+                zip_tmp = BASE_DIR / 'model.zip'
+                with zip_tmp.open('wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
 
             print('解壓中...')
             with zipfile.ZipFile(zip_tmp, 'r') as zip_ref:
+                base_dir = BASE_DIR.resolve()
+                for member in zip_ref.infolist():
+                    target = (BASE_DIR / member.filename).resolve()
+                    if target != base_dir and base_dir not in target.parents:
+                        raise ValueError(f'壓縮檔包含不安全的路徑：{member.filename}')
                 zip_ref.extractall(BASE_DIR)
 
             os.remove(zip_tmp)
             print('模型已就緒')
 
-            del r
             gc.collect()
         except Exception as e:
             print(f'模型下載失敗：{e}')
@@ -102,7 +106,9 @@ try:
     )
 
     print('權重載入中（CPU）')
-    state_dict = torch.load(PTH_PATH, map_location=torch.device('cpu'))
+    state_dict = torch.load(
+        PTH_PATH, map_location=torch.device('cpu'), weights_only=True
+    )
     model.load_state_dict(state_dict)
 
     model.eval()
