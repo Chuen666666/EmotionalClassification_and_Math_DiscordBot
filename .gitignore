@@ -15,6 +15,7 @@ server_channel.json
 # Python 暫存檔
 __pycache__/
 *.pyc
+.venv/
 
 # IDE/OS 雜項
 .vscode/

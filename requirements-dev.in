@@ -1,0 +1,4 @@
+-r requirements.in
+pre-commit==4.7.0
+ruff==0.17.4
+uv==0.13.7

@@ -4,7 +4,7 @@
 
 ### 基礎環境
 
-- Python（3.9+，建議使用 3.10 ~ 3.12）
+- Python 3.14
 - Discord 伺服器（具管理員或擁有者的權限）
 - Discord Bot（擁有 Token，並將它拉進 Discord 伺服器中）
 - （可選）Ruff
@@ -17,7 +17,7 @@
 2. 使用以下指令安裝依賴
 
 ```bash
-pip install -r requirements.txt
+python -m pip install --require-hashes -r requirements.txt
 ```
 
 ### 從範例檔建立必要檔案
@@ -71,7 +71,7 @@ python math_bot.py
 6. 選擇機器人的 GitHub Repo（可先 Fork 此 Repo）
 7. 回到 Render，填入以下設定
    - Runtime: `Python3`
-   - Build Command: `pip install -r requirements.txt`
+   - Build Command: `python -m pip install --require-hashes -r requirements.txt`
    - Start Command: `python math_bot.py`
    - Environment Variables（兩個）
      1. 填入名稱 `DISCORD_BOT_TOKEN` 以及具體的 Discord Bot Token 進去

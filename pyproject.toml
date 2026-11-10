@@ -1,6 +1,6 @@
 [tool.ruff]
 line-length = 88
-target-version = "py310"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "N", "UP", "FLY", "B", "RUF", "SIM", "PIE", "ARG"]
@@ -13,11 +13,12 @@ extend-safe-fixes = ["UP006", "UP007"]
 [tool.ruff.format]
 quote-style = "single"
 docstring-code-format = true
-skip-magic-trailing-comma = true
+skip-magic-trailing-comma = false
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
 lines-after-imports = 2
+split-on-trailing-comma = false
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
