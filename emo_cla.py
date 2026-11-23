@@ -2,12 +2,7 @@ import pandas as pd
 import torch
 from datasets import Dataset, DatasetDict
 from sklearn.model_selection import train_test_split
-from transformers import (
-    BertForSequenceClassification,
-    BertTokenizer,
-    Trainer,
-    TrainingArguments,
-)
+from transformers import BertForSequenceClassification, BertTokenizer, Trainer, TrainingArguments
 
 
 df = pd.read_excel('BERT_training_data.xlsx')
@@ -37,17 +32,11 @@ train_dataset = Dataset.from_dict(
     }
 )
 val_dataset = Dataset.from_dict(
-    {
-        'input_ids': val_encodings['input_ids'],
-        'attention_mask': val_encodings['attention_mask'],
-        'labels': val_labels,
-    }
+    {'input_ids': val_encodings['input_ids'], 'attention_mask': val_encodings['attention_mask'], 'labels': val_labels}
 )
 
 datasets = DatasetDict({'train': train_dataset, 'test': val_dataset})
-model = BertForSequenceClassification.from_pretrained(
-    'bert-base-chinese', num_labels=len(emotion_labels)
-)
+model = BertForSequenceClassification.from_pretrained('bert-base-chinese', num_labels=len(emotion_labels))
 
 training_args = TrainingArguments(
     output_dir='./results',
@@ -62,12 +51,7 @@ training_args = TrainingArguments(
     save_total_limit=2,
 )
 
-trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=datasets['train'],
-    eval_dataset=datasets['test'],
-)
+trainer = Trainer(model=model, args=training_args, train_dataset=datasets['train'], eval_dataset=datasets['test'])
 
 if __name__ == '__main__':
     trainer.train()

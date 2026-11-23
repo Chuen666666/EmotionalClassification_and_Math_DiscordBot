@@ -101,14 +101,10 @@ gc.collect()
 try:
     print('正在讀取模型結構')
     tokenizer = BertTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
-    model = BertForSequenceClassification.from_pretrained(
-        MODEL_DIR, local_files_only=True
-    )
+    model = BertForSequenceClassification.from_pretrained(MODEL_DIR, local_files_only=True)
 
     print('權重載入中（CPU）')
-    state_dict = torch.load(
-        PTH_PATH, map_location=torch.device('cpu'), weights_only=True
-    )
+    state_dict = torch.load(PTH_PATH, map_location=torch.device('cpu'), weights_only=True)
     model.load_state_dict(state_dict)
 
     model.eval()
@@ -191,9 +187,7 @@ def readable(coef: int | float, var: str) -> str:
 
 
 def predict_emotion(sentence) -> str | None:
-    inputs = tokenizer(
-        sentence, return_tensors='pt', truncation=True, padding=True, max_length=128
-    )
+    inputs = tokenizer(sentence, return_tensors='pt', truncation=True, padding=True, max_length=128)
     with torch.no_grad():
         outputs = model(**inputs)
     logits = outputs.logits
@@ -316,14 +310,7 @@ async def linear_equation_in_one_var(
         第二式的x項係數,  # noqa: N806
         第二式的y項係數,  # noqa: N806
         第二式的常數項,  # noqa: N806
-    ) = str_(
-        第一式的x項係數,
-        第一式的y項係數,
-        第一式的常數項,
-        第二式的x項係數,
-        第二式的y項係數,
-        第二式的常數項,
-    )
+    ) = str_(第一式的x項係數, 第一式的y項係數, 第一式的常數項, 第二式的x項係數, 第二式的y項係數, 第二式的常數項)
 
     d = 第一式的x項係數 * 第二式的y項係數 - 第二式的x項係數 * 第一式的y項係數
     dx = 第一式的常數項 * 第二式的y項係數 - 第二式的常數項 * 第一式的y項係數
@@ -407,13 +394,7 @@ async def geometric_sequence(
 async def geometric_series(ctx, 首項, 公比, 項數: int):  # noqa: N803
     """數列中的首項與公比之輸入，接受整數、小數、分數"""
     首項, 公比 = str_(首項, 公比)  # noqa: N806
-    await ctx.send(
-        f'S_n = {
-            int_(項數 * 首項)
-            if 公比 == 1.0
-            else int_((首項 * (1 - (公比**項數))) / (1 - 公比))
-        }'
-    )
+    await ctx.send(f'S_n = {int_(項數 * 首項) if 公比 == 1.0 else int_((首項 * (1 - (公比**項數))) / (1 - 公比))}')
 
 
 @bot.hybrid_command(name='階乘')
@@ -432,22 +413,14 @@ async def combination(ctx, n: int, k: int):
 async def exponent(ctx, 底數, 指數):  # noqa: N803
     """底數與指數之輸入，接受整數、小數、分數"""
     底數, 指數 = str_(底數, 指數)  # noqa: N806
-    await ctx.send(
-        f'{int_(底數) if 底數 >= 0 else f"({int_(底數)})"} ^ {int_(指數)} = {
-            int_(底數**指數)
-        }'
-    )
+    await ctx.send(f'{int_(底數) if 底數 >= 0 else f"({int_(底數)})"} ^ {int_(指數)} = {int_(底數**指數)}')
 
 
 @bot.hybrid_command(name='開n次方根')
 async def nth_root(ctx, 底數, n):  # noqa: N803
     """底數與n之輸入，接受整數、小數、分數"""
     底數, n = str_(底數, n)  # noqa: N806
-    await ctx.send(
-        f'{int_(底數)}的{int_(n)}次方根 = {int_(底數 ** (1 / n))}'
-        if 底數 > 0
-        else '開n次方根時 底數須為正'
-    )
+    await ctx.send(f'{int_(底數)}的{int_(n)}次方根 = {int_(底數 ** (1 / n))}' if 底數 > 0 else '開n次方根時 底數須為正')
 
 
 @bot.hybrid_command(name='對數')
@@ -510,9 +483,7 @@ async def on_message(msg):
             print('情緒辨識結果：Neutral')
             return
         await msg.add_reaction(emoji)
-        print(
-            f'情緒辨識結果：{"Positive" if emoji == emotion_to_emoji["Positive"] else "Negative"}'
-        )
+        print(f'情緒辨識結果：{"Positive" if emoji == emotion_to_emoji["Positive"] else "Negative"}')
     await bot.process_commands(msg)
 
 
