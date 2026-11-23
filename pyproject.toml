@@ -1,5 +1,5 @@
 [tool.ruff]
-line-length = 88
+line-length = 120
 target-version = "py314"
 
 [tool.ruff.lint]
@@ -13,7 +13,7 @@ extend-safe-fixes = ["UP006", "UP007"]
 [tool.ruff.format]
 quote-style = "single"
 docstring-code-format = true
-skip-magic-trailing-comma = false
+skip-magic-trailing-comma = true
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
